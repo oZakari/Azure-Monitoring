@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "stage": {
+            "value": {
+                "AG": 1,
+                "AL": 1
+
+            }
+        },
+        "DeploymentInfo": {
+            "value": {
+                "agInfo": [
+                    {
+                        "name": "actiongroup",
+                        "status": true,
+                        "shortName": "AG-Ops",
+                        "group": "Operations Team",
+                        "email": "ztrocinski@microsoft.com"
+                    }
+                ],
+                "alInfo": [
+                    {
+                        "name": "resourcehealthalert",
+                        "status": true,
+                        "ag": "actiongroup"
+                    }
+                ]
+            }
+        }
+    }
+}

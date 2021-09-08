@@ -1,0 +1,32 @@
+resources
+| where type =~ 'microsoft.compute/disks'
+| extend skuName=tostring(sku.name)
+| extend sizeProperty=tostring(properties.diskSizeGB)
+| extend size=iff(isempty(sizeProperty), '-', sizeProperty)
+| extend accountType=case(skuName =~ 'Standard_LRS', 'Standard HDD LRS',
+                          skuName =~ 'StandardSSD_LRS', 'Standard SSD LRS',
+                          skuName =~ 'UltraSSD_LRS', 'Ultra disk LRS',
+                          skuName =~ 'Premium_LRS', 'Premium SSD LRS',
+                          skuName =~ 'Standard_ZRS', 'Zone-redundant',
+                          skuName =~ 'Premium_ZRS', 'Premium SSD ZRS',
+                          skuName =~ 'StandardSSD_ZRS', 'Standard SSD ZRS',
+                          skuName)
+| extend timeCreated=tostring(properties.timeCreated)
+| extend iops=strcat(tostring(properties.diskIOPSReadWrite), '/', tostring(properties.diskMBpsReadWrite))
+| extend owner=coalesce(split(managedBy, '/')[(-1)], '-')
+| extend diskStateProperty=tostring(properties.diskState)
+| extend diskState=case(diskStateProperty =~ 'Attached', 'Attached',
+                        diskStateProperty =~ 'Unattached', 'Unattached',
+                        diskStateProperty =~ 'Reserved', 'Reserved',
+                        coalesce(diskStateProperty, '-'))
+| extend osType=coalesce(properties.osType, '-')
+| extend provisioningState=coalesce(properties.provisioningState, '-')
+| extend sourceId=tostring(coalesce(properties.creationData.imageReference.id, properties.creationData.sourceUri, properties.creationData.sourceResourceId))
+| parse kind=regex sourceId with '/Publishers/' publisher '/ArtifactTypes/(.*)/Offers/' offer '/Skus/' sku '/Versions/' version
+| extend createOption=tostring(properties.creationData.createOption)
+| extend source=case(createOption =~ 'empty', '-',
+                     createOption =~ 'copy', split(sourceId, '/')[(-1)],
+                     createOption =~ 'import', sourceId,
+                     createOption =~ 'fromImage', strcat(publisher, ' / ', offer, ' / ', sku, ' / ', version),
+                     '-')
+| project name, id, size, subscriptionId, resourceGroup, location, type, kind, tags, tenantId, accountType, diskState, timeCreated, iops, owner, osType, provisioningState, source
