@@ -1,0 +1,32 @@
+name: manage-azure-policy-2468461a
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/policies/ZT-ServiceHealthAlerts_d6782f97-ab55-4fbd-812b-3ebba31e7984/**'
+#      - .github/workflows/manage-azure-policy-2468461a.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_2468461a}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/policies/ZT-ServiceHealthAlerts_d6782f97-ab55-4fbd-812b-3ebba31e7984/**
