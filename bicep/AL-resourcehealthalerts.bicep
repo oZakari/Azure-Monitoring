@@ -46,10 +46,6 @@ resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
               field: 'resourceType'
               equals: 'Microsoft.Sql/servers/databases'
             }
-            {
-              field: 'resourceType'
-              equals: 'Microsoft.Compute/virtualMachines'
-            }
           ]
         }
         //Current Resource Status
