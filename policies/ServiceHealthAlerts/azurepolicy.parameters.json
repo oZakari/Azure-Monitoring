@@ -4,7 +4,8 @@
         "metadata": {
             "displayName": "resourceGroupName",
             "description": null
-        }
+        },
+        "defaultValue": "Management"
     },
     "actionGroupName": {
         "type": "String",
@@ -27,7 +28,8 @@
         "metadata": {
             "displayName": "emailAddress",
             "description": "Email address."
-        }
+        },
+        "defaultValue": "ztrocinski@outlook.com"
     },
     "activityLogAlertName": {
         "type": "String",
