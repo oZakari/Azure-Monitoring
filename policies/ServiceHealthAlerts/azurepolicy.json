@@ -1,6 +1,6 @@
 {
   "properties": {
-    "displayName": "Deploy Service Health Alerts and corresponding Action Group to notifiy of Service Health Incidents",
+    "displayName": "Deploy Service Health Alerts and corresponding Action Group to notify of Service Health related issues",
     "mode": "All",
     "parameters": {
       "resourceGroupName": {
@@ -8,8 +8,7 @@
         "metadata": {
           "displayName": "resourceGroupName",
           "description": null
-        },
-        "defaultValue": "Management"
+        }
       },
       "actionGroupName": {
         "type": "String",
@@ -17,7 +16,7 @@
           "displayName": "actionGroupName",
           "description": "Name for the Action group."
         },
-        "defaultValue": "serviceHealthActionGroup"
+        "defaultValue": "SHActionGroup"
       },
       "actionGroupShortName": {
         "type": "String",
@@ -25,15 +24,14 @@
           "displayName": "actionGroupShortName",
           "description": "Short name for the Action group."
         },
-        "defaultValue": "serviceAG"
+        "defaultValue": "SHAcG"
       },
       "emailAddress": {
         "type": "String",
         "metadata": {
           "displayName": "emailAddress",
           "description": "Email address."
-        },
-        "defaultValue": "ztrocinski@outlook.com"
+        }
       },
       "activityLogAlertName": {
         "type": "String",
@@ -165,7 +163,16 @@
                                   "name": "emailReceiver",
                                   "emailAddress": "[parameters('emailAddress')]"
                                 }
-                              ]
+                              ],
+                              "smsReceivers": [],
+                              "webhookReceivers": [],
+                              "itsmReceivers": [],
+                              "azureAppPushReceivers": [],
+                              "automationRunbookReceivers": [],
+                              "voiceReceivers": [],
+                              "logicAppReceivers": [],
+                              "azureFunctionReceivers": [],
+                              "armRoleReceivers": []
                             }
                           },
                           {
@@ -188,15 +195,61 @@
                                     "equals": "ServiceHealth"
                                   },
                                   {
-                                    "field": "properties.incidentType",
-                                    "equals": "Incident"
+                                    "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName",
+                                    "containsAny": [
+                                      "Australia Central",
+                                      "Australia Central 2",
+                                      "Australia East",
+                                      "Australia Southeast",
+                                      "Brazil South",
+                                      "Brazil Southeast",
+                                      "Canada Central",
+                                      "Canada East",
+                                      "Central India",
+                                      "Central US",
+                                      "East Asia",
+                                      "East US",
+                                      "East US 2",
+                                      "France Central",
+                                      "France South",
+                                      "Germany North",
+                                      "Germany West Central",
+                                      "Global",
+                                      "Japan East",
+                                      "Japan West",
+                                      "Jio India Central",
+                                      "Jio India West",
+                                      "Korea Central",
+                                      "Korea South",
+                                      "North Central US",
+                                      "North Europe",
+                                      "Norway East",
+                                      "Norway West",
+                                      "South Africa North",
+                                      "South Africa West",
+                                      "South Central US",
+                                      "South India",
+                                      "Southeast Asia",
+                                      "Switzerland North",
+                                      "Switzerland West",
+                                      "UAE Central",
+                                      "UAE North",
+                                      "UK South",
+                                      "UK West",
+                                      "West Central US",
+                                      "West Europe",
+                                      "West India",
+                                      "West US",
+                                      "West US 2",
+                                      "West US 3"
+                                    ]
                                   }
                                 ]
                               },
                               "actions": {
                                 "actionGroups": [
                                   {
-                                    "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+                                    "actionGroupId": "[concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
                                   }
                                 ]
                               }
