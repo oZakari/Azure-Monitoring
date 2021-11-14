@@ -81,7 +81,7 @@
                   "location": "eastus2",
                   "tags": {
                     "Dev": "1",
-                    "Cost Center": "123"
+                    "Cost Center": "1234"
                   },
                   "properties": {}
                 },
@@ -142,10 +142,6 @@
                                 {
                                   "field": "category",
                                   "equals": "ServiceHealth"
-                                },
-                                {
-                                  "field": "properties.incidentType",
-                                  "equals": "Incident"
                                 },
                                 {
                                   "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName",
