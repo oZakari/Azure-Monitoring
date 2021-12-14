@@ -30,23 +30,11 @@
                       "equals": "ServiceHealth"
                     }
                   ]
-                },
-                {
-                  "allOf": [
-                    {
-                      "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].field",
-                      "equals": "properties.incidentType"
-                    },
-                    {
-                      "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].equals",
-                      "equals": "Incident"
-                    }
-                  ]
                 }
               ]
             }
           },
-          "equals": 2
+          "equals": 1
         },
         "deploymentScope": "subscription",
         "deployment": {
